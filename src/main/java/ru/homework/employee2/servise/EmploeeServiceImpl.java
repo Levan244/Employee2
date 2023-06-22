@@ -5,31 +5,27 @@ import ru.homework.employee2.exception.EmployeeAlreadyAddedException;
 import ru.homework.employee2.exception.EmployeeNotFoundException;
 import ru.homework.employee2.model.Employee;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
 @Service
 
 public class EmploeeServiceImpl implements EmployeeService {
 
-    private static final int EMPLOYEE_MAX_COUNT = 5;
-    private final List<Employee> employees;
+
+    private final Map<String, Employee> employees;
 
     public EmploeeServiceImpl(List<Employee> employees) {
-        this.employees = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
 
     @Override
     public Employee add(String firstName, String lastName) {
-        if (employees.size() >= EMPLOYEE_MAX_COUNT) {
-            throw new EmployeeNotFoundException();
-        }
+
         Employee employee = new Employee(firstName, lastName);
-        if (employees.contains(employee)) {
+        if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employees.add(employee);
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
@@ -38,10 +34,10 @@ public class EmploeeServiceImpl implements EmployeeService {
 
         Employee employee = new Employee(firstName, lastName);
 
-        if (!employees.contains(employee)) {
+        if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
         }
-        employees.remove(employee);
+        employees.remove(employee.getFullName());
         return employee;
     }
 
@@ -49,7 +45,7 @@ public class EmploeeServiceImpl implements EmployeeService {
     public Employee find(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
 
-        if (!employees.contains(employee)) {
+        if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
         }
         employees.remove(employee);
@@ -58,7 +54,7 @@ public class EmploeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<Employee> findAll() {
-        return employees;
+        return employees.values();
     }
 
 }
