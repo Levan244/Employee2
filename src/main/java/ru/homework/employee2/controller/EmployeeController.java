@@ -9,6 +9,9 @@ import ru.homework.employee2.servise.EmployeeService;
 
 import java.util.Collection;
 
+import static ru.homework.employee2.servise.impl.EmployeeServiceImpl.DEPARTMENT_ID;
+import static ru.homework.employee2.servise.impl.EmployeeServiceImpl.SALARY;
+
 @RestController
 @RequestMapping("/employee")
 
@@ -21,16 +24,16 @@ public class EmployeeController {
 
     @GetMapping("/add")
     public Employee add(@RequestParam String firstName, @RequestParam String lastName) {
-        return employeeService.add(firstName, lastName);
+        return employeeService.add(firstName, lastName, SALARY, DEPARTMENT_ID);
     }
     @GetMapping("/remove")
     public Employee remove(@RequestParam String firstName, @RequestParam String lastName) {
-        return employeeService.add(firstName, lastName);
+        return employeeService.add(firstName, lastName, SALARY, DEPARTMENT_ID);
     }
 
     @GetMapping("/find")
     public Employee find(@RequestParam String firstName, @RequestParam String lastName) {
-        return employeeService.add(firstName, lastName);
+        return employeeService.add(firstName, lastName, SALARY, DEPARTMENT_ID);
     }
 
     @GetMapping

@@ -11,23 +11,25 @@ import java.util.*;
 
 @Service
 
-public class EmploeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
 
+    public static final int SALARY = 1000;
+    public static final int DEPARTMENT_ID = 1;
     private final Map<String, Employee> employees;
     private final EmployeeValidationService validationService;
     private Employee capitalizeEmployee;
 
-    public EmploeeServiceImpl(List<Employee> employees, EmployeeValidationService validationService) {
+    public EmployeeServiceImpl(EmployeeValidationService validationService) {
         this.validationService = validationService;
         this.employees = new HashMap<>();
     }
 
     @Override
-    public Employee add(String firstName, String lastName) {
+    public Employee add(String firstName, String lastName, int salary, int departmentId) {
         validationService.validate(firstName, lastName);
 
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, SALARY, DEPARTMENT_ID);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
@@ -38,7 +40,7 @@ public class EmploeeServiceImpl implements EmployeeService {
     @Override
     public Employee remove(String firstName, String lastName) {
 
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, SALARY, DEPARTMENT_ID);
 
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
@@ -49,7 +51,7 @@ public class EmploeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, SALARY, DEPARTMENT_ID);
 
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();

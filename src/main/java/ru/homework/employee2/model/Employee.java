@@ -47,7 +47,7 @@ public class Employee {
         return departmentId;
     }
 
-    public Employee(String firstName, String lastName) {
+    public Employee(String firstName, String lastName, int salary, int departmentId) {
         Random random = new Random();
 
         this.firstName = firstName;
