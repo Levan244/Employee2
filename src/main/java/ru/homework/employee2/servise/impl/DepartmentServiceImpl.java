@@ -17,7 +17,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final EmployeeService employeeService;
 
-    public DepartmentServiceImpl(EmployeeService employeeService) {
+    public DepartmentServiceImpl(EmployeeService employeeService)  {
         this.employeeService = employeeService;
     }
 
@@ -25,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Integer getDepartmentSalarySum(int departmentId) {
         return employeeService.findAll().stream()
+                .filter(e-> e.getDepartmentId()==departmentId)
                 .mapToInt(Employee::getSalary)
                 .sum();
     }

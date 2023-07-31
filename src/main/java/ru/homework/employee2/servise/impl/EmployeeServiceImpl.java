@@ -3,11 +3,15 @@ package ru.homework.employee2.servise.impl;
 import org.springframework.stereotype.Service;
 import ru.homework.employee2.exception.EmployeeAlreadyAddedException;
 import ru.homework.employee2.exception.EmployeeNotFoundException;
+import ru.homework.employee2.exception.InvalidEmployeeDataException;
 import ru.homework.employee2.model.Employee;
 import ru.homework.employee2.servise.EmployeeService;
 import ru.homework.employee2.servise.EmployeeValidationService;
 
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 
@@ -28,14 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee add(String firstName, String lastName, int salary, int departmentId) {
         validationService.validate(firstName, lastName);
-
-        Employee employee = new Employee(firstName, lastName, SALARY, DEPARTMENT_ID);
-        if (employees.containsKey(employee.getFullName())) {
-            throw new EmployeeAlreadyAddedException();
-        }
-        employees.put(employee.getFullName(), employee);
-        return capitalizeEmployee;
+        return addEmployee(new Employee(capitalize(firstName), capitalize(lastName), salary, departmentId));
     }
+
 
     @Override
     public Employee remove(String firstName, String lastName) {
@@ -64,5 +63,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<Employee> findAll() {
         return employees.values();
     }
+
+    private Employee addEmployee(Employee employee) {
+        if (employees.containsKey(employee.getFullName())) {
+            throw new EmployeeAlreadyAddedException();
+        }
+        employees.put(employee.getFullName(), employee);
+        return employee;
+    }
+
 
 }
